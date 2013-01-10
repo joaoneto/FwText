@@ -1,0 +1,36 @@
+/*
+ * Webforms plugin
+ * Copyright (c) 2013 João Pinto Neto
+ * Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
+ */
+.wf-richtext-toolbar {
+}
+
+.wf-richtext-toolbar .icon-font:before { content: "[F]" }
+.wf-richtext-toolbar .icon-bold:before { content: "[B]" }
+.wf-richtext-toolbar .icon-italic:before { content: "[I]" }
+.wf-richtext-toolbar .icon-link:before { content: "[L"] }
+.wf-richtext-toolbar .icon-picture:before { content: "[Pic]" }
+.wf-richtext-toolbar .icon-liste:before { content: "[List]" }
+.wf-richtext-toolbar .icon-indent-left:before { content: "[<]" }
+.wf-richtext-toolbar .icon-indent-right:before { content: "[>]" }
+.wf-richtext-toolbar .icon-align-left:before { content: "[‹]" }
+.wf-richtext-toolbar .icon-align-center:before { content: "[-]" }
+.wf-richtext-toolbar .icon-align-right:before { content: "[›]" }
+
+div.wf-richtext {
+  cursor: text;
+  padding: 5px;
+  overflow: auto;
+  white-space: nowrap;
+  -moz-transition: border 0.2s linear 0s, box-shadow 0.2s linear 0s;
+  background-color: #FFFFFF;
+  border: 1px solid #CCCCCC;
+  border-radius: 3px 3px 3px 3px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+}
+div.wf-richtext:focus {
+    border-color: rgba(116, 12, 160, 0.8);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(116, 12, 160, 0.6);
+    outline: 0 none;
+}

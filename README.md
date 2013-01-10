@@ -1,4 +1,4 @@
-webforms
+Webforms
 ========
 
-jQuery Widgets
+jQuery plugin

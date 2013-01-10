@@ -1,3 +1,8 @@
+/*
+ * Webforms plugin
+ * Copyright (c) 2013 João Pinto Neto
+ * Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
+ */
 (function($){
   $.fn.richtext = function(options) {
     var instance, textarea;
