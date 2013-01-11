@@ -4,6 +4,11 @@
  * Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
  */
 (function($){
+  function log() {
+    if ($.fn.wf_debug && console && console.log)
+      console.log.apply(this, arguments);
+  }
+
   $.fn.richtext = function(options) {
     var instance, textarea;
     var settings = $.extend(
@@ -38,7 +43,7 @@
     
     function generateToolbar() {
         textarea.toolBar = $('<div/>')
-        .addClass('btn-toolbar wf-richtext-toolbar')
+        .addClass('wf-richtext-toolbar')
         .appendTo(textarea.parent());
 
         $(settings.toolbar.buttons).each(function(i, btn) {
@@ -61,22 +66,22 @@
       if (type == 'list') {
         type = 'insertUnorderedList';
       }
-      if (type == 'align-left') {
+      else if (type == 'align-left') {
         type = 'JustifyLeft';
       }
-      if (type == 'align-center') {
+      else if (type == 'align-center') {
         type = 'JustifyCenter';
       }
-      if (type == 'align-right') {
+      else if (type == 'align-right') {
         type = 'JustifyRight';
       }
-      if (type == 'indent-right') {
+      else if (type == 'indent-right') {
         type = 'Outdent';
       }
-      if (type == 'indent-left') {
+      else if (type == 'indent-left') {
         type = 'Indent';
       }
-      if (type == 'picture') {
+      else if (type == 'picture') {
         return uploadFile();
       }
       
@@ -86,11 +91,12 @@
     function uploadFile() {
       // <form action="upload.php" method="post" enctype="multipart/form-data" class="img-upload form-horizontal">
       // <input type="file" name="img_file" class="input-file" />
-      var $form = $('<form/>')
-      .attr({action: 'upload.php', method: 'post', enctype: 'multipart/form-data'})
-      .imgupload(function(data){console.log(data)})
-      .append($(''))
-      console.log($form)
+
+      // var $form = $('<form/>')
+      // .attr({action: 'upload.php', method: 'post', enctype: 'multipart/form-data'})
+      // .imgupload(function(data){log(data)})
+      // .append($(''))
+      // log($form)
     }
 
     function init() {
@@ -125,17 +131,30 @@
     function init() {
       img_form = $(this);
       img_form.submit(function() {
-        $(this).ajaxSubmit({
-          dataType:  'json',
-          // beforeSubmit:  function() {
-          // },
-          success: function(responseText, statusText, xhr, $form) {
-            callback(responseText);
-          },
-          clearForm: true
+        var form_data = new FormData(img_form[0]);
+        log(form_data);
+
+        var params = $.extend(true, {}, $.ajaxSettings, {
+          contentType: false,
+          processData: false,
+          cache: false,
+          type: method || 'POST'
         });
+
+        $.ajax(params);
+
+        // $(this).ajaxSubmit({
+        //   dataType:  'json',
+        //   // beforeSubmit:  function() {
+        //   // },
+        //   success: function(responseText, statusText, xhr, $form) {
+        //     callback(responseText);
+        //   },
+        //   clearForm: true
+        // });
         return false;
       });
+
       return this;
     }
 

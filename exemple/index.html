@@ -4,27 +4,24 @@
     <meta charset="utf-8">
     <title>Webforms</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    
-    <link rel="stylesheet" type="text/css" href="css/webforms.css" />
+    <link rel="stylesheet" type="text/css" href="../css/webforms.css" />
   </head>
 
 <body>
 
-<form action="upload.php" method="post" enctype="multipart/form-data" class="form-horizontal">
+<form action="upload.php" method="post" enctype="multipart/form-data" class="img-upload">
     <textarea class="richtext1" rows="3" style="width:500px"></textarea>
-</form>
-
-<form action="upload.php" method="post" enctype="multipart/form-data" class="img-upload form-horizontal">
-    <input type="file" name="img_file" class="input-file" />
-    <input type="submit" value="Upload" class="btn" />
+    <input type="file" name="img_file" class"img-file" />
+    <input type="submit" value="Upload" />
 </form>
 
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
-<script type="text/javascript" src="jquery.webforms.js"></script>
+<script type="text/javascript" src="../jquery.webforms.js"></script>
 
 <script type="text/javascript">
   $(document).ready(function() {
+    $.fn.wf_debug = true;
+    
     $(".richtext1").richtext();
     $(".img-upload").imgupload({}, function(data){console.log(data)});
   });
