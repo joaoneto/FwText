@@ -4,19 +4,30 @@
  * Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
  */
 .wf-richtext-toolbar {
+  margin: 4px 0;
 }
 
-.wf-richtext-toolbar .icon-font:before { content: "[F]" }
-.wf-richtext-toolbar .icon-bold:before { content: "[B]" }
-.wf-richtext-toolbar .icon-italic:before { content: "[I]" }
-.wf-richtext-toolbar .icon-link:before { content: "[L"] }
-.wf-richtext-toolbar .icon-picture:before { content: "[Pic]" }
-.wf-richtext-toolbar .icon-liste:before { content: "[List]" }
-.wf-richtext-toolbar .icon-indent-left:before { content: "[<]" }
-.wf-richtext-toolbar .icon-indent-right:before { content: "[>]" }
-.wf-richtext-toolbar .icon-align-left:before { content: "[‹]" }
-.wf-richtext-toolbar .icon-align-center:before { content: "[-]" }
-.wf-richtext-toolbar .icon-align-right:before { content: "[›]" }
+.wf-richtext-toolbar a {
+  color: rgba(0, 0, 0, 0.8);
+  font-size: 14px;
+  text-decoration: none;
+  margin: 0 4px;
+}
+.wf-richtext-toolbar a:hover {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.wf-richtext-toolbar .icon-font {  }
+.wf-richtext-toolbar .icon-bold {  }
+.wf-richtext-toolbar .icon-italic {  }
+.wf-richtext-toolbar .icon-link {  }
+.wf-richtext-toolbar .icon-picture {  }
+.wf-richtext-toolbar .icon-liste {  }
+.wf-richtext-toolbar .icon-indent-left {  }
+.wf-richtext-toolbar .icon-indent-right {  }
+.wf-richtext-toolbar .icon-align-left {  }
+.wf-richtext-toolbar .icon-align-center {  }
+.wf-richtext-toolbar .icon-align-right {  }
 
 div.wf-richtext {
   cursor: text;
@@ -30,7 +41,7 @@ div.wf-richtext {
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
 }
 div.wf-richtext:focus {
-    border-color: rgba(116, 12, 160, 0.8);
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(116, 12, 160, 0.6);
+    border-color: rgba(0, 0, 0, 0.8);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(0, 0, 0, 0.6);
     outline: 0 none;
 }
