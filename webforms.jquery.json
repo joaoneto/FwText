@@ -1,0 +1,36 @@
+{
+  "name": "webforms",
+  "title": "jQuery Webforms",
+  "description": "Form widgets",
+  "keywords": [
+    "jquery",
+    "webforms",
+    "form",
+    "widgets"
+  ],
+  "version": "0.1",
+  "author": {
+    "name": "João Neto",
+    "url": "https://github.com/joaoneto"
+  },
+  "maintainers": [
+    {
+      "name": "João Neto",
+      "email": "joaopintoneto@gmail.com",
+      "url": "https://github.com/joaoneto"
+    }
+  ],
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://www.opensource.org/licenses/mit-license.php"
+    }
+  ],
+  "bugs": "https://github.com/jquery-boilerplate/boilerplate/issues",
+  "homepage": "http://joaoneto.github.com/webforms/",
+  "docs": "https://github.com/joaoneto/webforms/#readme",
+  "download": "https://github.com/joaoneto/webforms/archive/master.zip",
+  "dependencies": {
+    "jquery": ">=1.5"
+  }
+}
