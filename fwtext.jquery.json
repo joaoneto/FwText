@@ -1,12 +1,14 @@
 {
-  "name": "webforms",
-  "title": "jQuery Webforms",
-  "description": "Form widgets",
+  "name": "FwText",
+  "title": "Free WYSIWYG text editor jQuery Plugin",
+  "description": "This plugin implements a free HTML / text editor.",
   "keywords": [
+    "FwText",
     "jquery",
-    "webforms",
-    "form",
-    "widgets"
+    "richtext",
+    "WYSIWYG",
+    "markup",
+    "editor"
   ],
   "version": "0.1",
   "author": {
@@ -27,9 +29,9 @@
     }
   ],
   "bugs": "https://github.com/jquery-boilerplate/boilerplate/issues",
-  "homepage": "http://joaoneto.github.com/webforms/",
-  "docs": "https://github.com/joaoneto/webforms/#readme",
-  "download": "https://github.com/joaoneto/webforms/archive/master.zip",
+  "homepage": "http://joaoneto.github.com/FwText/",
+  "docs": "https://github.com/joaoneto/FwText/#readme",
+  "download": "https://github.com/joaoneto/FwText/archive/master.zip",
   "dependencies": {
     "jquery": ">=1.5"
   }

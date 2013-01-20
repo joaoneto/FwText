@@ -69,7 +69,7 @@
             $('<form/>')
               .imgupload({}, function(data) {
                 $(data.files).each(function (i, p) {
-                  textarea.richTextArea.append( $('<img/>').attr({src: p}));
+                  textarea.richTextArea.append( $('<img/>').attr({src: p}).resizable() );
                 });
               })
               .attr('action', 'upload.php')
@@ -80,6 +80,9 @@
 
     function generateRichTextArea() {
       textarea.richTextArea = $('<div/>')
+        // debug
+        .append($('<img src="Bonsai.gif">').resizable())
+        // debug
         .css({
           width: textarea.width(),
           height: textarea.height()
@@ -155,6 +158,25 @@
       });
     })
 
+  };
+
+  $.wf.resizable = function (options) {
+    return this.each(function () {
+      $(this).bind({
+        click: function () {
+          console.log(this)
+          $(this)
+            .focus()
+            .wrap(
+              $('<div/>')
+                .css({border: '1px solid #333', display: 'table-cell'})
+            )
+        },
+        blur: function () {
+          $(this).unwrap()
+        },
+      });
+    });
   };
 
 })(jQuery);
