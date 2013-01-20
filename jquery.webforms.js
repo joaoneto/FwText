@@ -6,13 +6,15 @@
 (function ($) {
 
   function log() {
-    // if ($.fn.wf_debug && console && console.log) {
-    //   console.log.apply(this, arguments);
-    // }
+    if ($.fn.wf_debug && console && console.log) {
+      console.log.apply(console, arguments);
+    }
   }
 
-  $.fn.richtext = function (options) {
-    var instance, textarea;
+  $.wf = $.fn;
+
+  $.wf.richtext = function (options) {
+    var textarea;
     var settings = $.extend(
       {},
       {
@@ -27,7 +29,8 @@
           'indent-right',
           'align-left',
           'align-center',
-          'align-right'
+          'align-right',
+          'upload'
         ] }
       },
       options
@@ -50,10 +53,30 @@
         type = 'Indent';
       } else if (type === 'picture') {
         type = 'insertImage';
+      } else if (type === 'upload') {
+        $('.wf-upload').toggle();
+        return;
       }
 
       return this.document.execCommand(type, false, arg);
     };
+
+    function generateForm() {
+        $('<div/>')
+          .css('display', 'none')
+          .addClass('wf-upload')
+          .append(
+            $('<form/>')
+              .imgupload({}, function(data) {
+                $(data.files).each(function (i, p) {
+                  textarea.richTextArea.append( $('<img/>').attr({src: p}));
+                });
+              })
+              .attr('action', 'upload.php')
+              .append($('<input/>').attr({ name: 'img_file', type: 'file' }), $('<input/>').attr({ type: 'submit'}))
+          )
+          .insertBefore(textarea);
+    }
 
     function generateRichTextArea() {
       textarea.richTextArea = $('<div/>')
@@ -62,14 +85,14 @@
           height: textarea.height()
         })
         .addClass('wf-richtext')
-        .appendTo(textarea.parent())
-        .attr('contentEditable', true);
+        .attr('contentEditable', true)
+        .insertBefore(textarea);
     }
 
     function generateToolbar() {
       textarea.toolBar = $('<div/>')
         .addClass('wf-richtext-toolbar')
-        .appendTo(textarea.parent());
+        .insertBefore(textarea);
 
       $(settings.toolbar.buttons).each(function (i, btn) {
         var img = btn !== 'link' ? btn.toLowerCase() : 'share';
@@ -77,7 +100,7 @@
           .addClass('btn')
           .attr('href', '#')
           .append($('<i/>').addClass('icon-' + img))
-          .on('click', function (e) {
+          .bind('click', function (e) {
             e.preventDefault();
             exec(btn);
             textarea.richTextArea.focus();
@@ -91,12 +114,12 @@
       textarea.hide();
       generateToolbar();
       generateRichTextArea();
+      generateForm();
       return this;
     }
 
     this.test = function () {
       log('test');
-      return this;
     };
 
     return this.each(function () {
@@ -104,55 +127,34 @@
         $(this).data('instance', init.apply(this));
         log('richtext instancied!');
       }
-      instance = $(this).data('instance');
     });
 
   };
 
 
 
-  $.fn.imgupload = function (options, callback) {
+  $.wf.imgupload = function (options, callback) {
     callback = callback || function () {};
     options = options || {};
 
-    var instance, img_form;
-    var params = $.extend(
+    options = $.extend(
       {},
       $.ajaxSettings,
-      { contentType: false, processData: false, cache: false, type: 'post' },
-      { 'uploadDir': '.' },
+      { contentType: false, processData: false, cache: false, type: 'post', uploadDir: '.' },
       options
     );
-
-    function init() {
-      img_form = $(this);
-      img_form.submit(function (e) {
-        e.preventDefault();
-        params.url = options.url || $(img_form).attr('action') || params.url;
-        params.type = options.type || $(img_form).attr('method') || params.type;
-        params.data = new FormData(this);
-        params.data.append('uploadDir', params.uploadDir);
-        params.success = function (data) {
-          log(data)
-          if (data.files) {
-            $(data.files).each(function (i, p) {
-              // data.files
-              $(this).siblings('.richtext').exec('picture', p);
-            });
-          }
-        };
-        $.ajax(params);
-      });
-      return this;
-    }
+    options.success = callback;
 
     return this.each(function () {
-      if (!$(this).data('instance')) {
-        $(this).data('instance', init.apply(this));
-        log('imgupload instancied!');
-      }
-      instance = $(this).data('instance');
-    });
+      $(this).bind('submit', function (e) {
+        e.preventDefault();
+        options.url = $(this).attr('action') || options.url;
+        options.data = new FormData(this);
+        options.data.append('uploadDir', options.uploadDir);
+        $.ajax(options);
+      });
+    })
+
   };
 
 })(jQuery);
