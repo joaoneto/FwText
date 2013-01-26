@@ -30,10 +30,16 @@
   var lastCrc;
 
   $(document).ready(function() {
-    $.fw.fw_debug = true;
+    // $.fw.debug = true;
     
     $(".richtext1").richtext();
     $(".img-upload").imgupload({}, function(data){console.log(data)});
+
+
+    // debug events
+    $.fw.events.bind('onFocus onBlur elementSelected elementDeselected', function (e, node) {
+      console.log(e, node)
+    })
 
   });
 

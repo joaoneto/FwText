@@ -1,6 +1,6 @@
 <?php
 /**
- * Webforms plugin
+ * FwText plugin
  * Copyright (c) 2013 João Pinto Neto
  * Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
  */

@@ -13,51 +13,63 @@
 
   $.fw = $.fn;
 
+  $.fw.events = undefined;
+
+  $.fw.defaultOptions = {
+    'toolbar': {
+      'buttons': [
+        'font',
+        'bold',
+        'italic',
+        'link',
+        'picture',
+        'list',
+        'indent-left',
+        'indent-right',
+        'align-left',
+        'align-center',
+        'align-right',
+        'upload'
+      ] }
+  };
+
   $.fw.richtext = function (options) {
     var textarea, lastElementSelected;
     var settings = $.extend(
       {},
-      {
-        'toolbar': { 'buttons': [
-          'font',
-          'bold',
-          'italic',
-          'link',
-          'picture',
-          'list',
-          'indent-left',
-          'indent-right',
-          'align-left',
-          'align-center',
-          'align-right',
-          'upload'
-        ] }
-      },
+      $.fw.defaultOptions,
       options
     );
 
-    var defaultTextareaEvents = {
-      click: function (e) {
-        var target = $(e.target);
-        var $this = $(this);
-        
-        if (lastElementSelected !== this && target === this) {
-          $this.trigger('onFocus', [$(lastElementSelected)]);
-        }
+    function startEvents() {
+      var defaultTextareaEvents = {
+        click: function (e) {
+          var $this = $(this)
+            , target = e.target
+            , $target = $(target, textarea.richTextArea)
+            , $lastElementSelected = $(lastElementSelected);
+          
+          if (lastElementSelected !== this && target === this) {
+            $this.trigger('onFocus', [$lastElementSelected]);
+          }
 
-        if (target.hasClass('fw-richtext')) {
+          if (!$target.hasClass('fw-richtext'))
+            $target.trigger('elementSelected', [$target]);
+
           if (typeof lastElementSelected !== 'undefined' && e.target !== lastElementSelected)
-            $.event.trigger('elementDeselected', [$(lastElementSelected)]);
-            // $this.trigger('elementDeselected', [$(lastElementSelected)]);
-        } else {
-          target.trigger('elementSelected', [target]);
-          // $this.trigger('elementSelected', [$(target)]);
+            $(lastElementSelected).trigger('elementDeselected', [$lastElementSelected]);
+
+          lastElementSelected = target;
+
         }
+      };
 
-        lastElementSelected = target;
-
+      if (!$.fw.events) {
+        $.fw.events = $(document);
+        $.fw.events.bind(defaultTextareaEvents);
       }
-    };
+      
+    }
 
     function exec(type, arg) {
       arg = arg || null;
@@ -104,9 +116,9 @@
     function generateRichTextArea() {
       textarea.richTextArea = $('<div/>')
         // debug ---------------------------------------------------------------
-        .append($('<img src=".face">').resizable())
+        .append($('<img src=".face">').elementResizable())
+        .append($('<img src=".face">').elementResizable())
         // .append($('<img src=".face">').resizable())
-        .append($('<img src=".face">').resizable())
         // debug ---------------------------------------------------------------
         .css({
           width: textarea.width(),
@@ -145,23 +157,7 @@
       generateToolbar();
       generateRichTextArea();
       generateForm();
-      
-      // $(textarea.richTextArea).bind(defaultTextareaEvents);
-      $(document).bind(defaultTextareaEvents);
-
-      // debug ---------------------------------------------------------------
-      // $(textarea.richTextArea).bind('onFocus onBlur elementSelected elementDeselected', function (event, node) {
-      //   log(event, node);
-      // });
-      // $(textarea.richTextArea).bind('elementDeselected', function (event, node) {
-      //   log(event, node);
-      // });
-
-      // $(document).bind('elementDeselected', function (event, node) {
-      //   $('.fw-area').remove();
-      // });
-      // debug ---------------------------------------------------------------
-
+      startEvents();
       return this;
     }
 
@@ -210,13 +206,12 @@
   /*
    * Plugin to resize objects (Workarond to webkit contentEditable)
    */
-  $.fw.resizable = function (options) {
+  $.fw.elementResizable = function (options) {
 
     return this.each(function (i, el) {
-      log(el)
-      $(el).bind({
+      var $el = $(el);
+      $el.bind({
         elementSelected: function (e, node) {
-          e.stopPropagation();
           var area;
           
           $('.fw-area').remove();
@@ -227,16 +222,13 @@
               width: node.width(),
               height: node.height(),
               left: node.offset().left,
+              top: node.offset().top,
               display: 'block',
               position: 'absolute'
             })
             .prependTo(node.parent());
-          
-          // log($('<div/>'))
-          log('selected', el)
         },
         elementDeselected: function (e, node) {
-          e.stopPropagation();
           log('pong', node);
           $('.fw-area').remove();
         },
