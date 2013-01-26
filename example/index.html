@@ -2,7 +2,7 @@
 <html lang="pt-BR">
   <head>
     <meta charset="utf-8">
-    <title>Webforms</title>
+    <title>FwText</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="../css/fwtext.css" />
     <link rel="stylesheet" type="text/css" href="../vendors/Font-Awesome/css/font-awesome.min.css">
@@ -10,7 +10,7 @@
 
 <body>
 <h2>Textarea</h2>
-<textarea class="richtext1" rows="3" style="width:500px"></textarea>
+<textarea class="richtext1" rows="10" style="width:500px"></textarea>
 
 <hr>
 <h2>Upload</h2>
@@ -27,13 +27,19 @@
 <script type="text/javascript" src="../jquery.fwtext.js"></script>
 
 <script type="text/javascript">
+  var lastCrc;
+
   $(document).ready(function() {
-    $.fn.wf_debug = true;
+    $.fw.fw_debug = true;
     
     $(".richtext1").richtext();
     $(".img-upload").imgupload({}, function(data){console.log(data)});
 
   });
+
+
+
+
 </script>
 
 

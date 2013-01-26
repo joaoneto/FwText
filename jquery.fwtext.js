@@ -1,20 +1,20 @@
 /*
- * Webforms plugin
+ * FwText plugin
  * Copyright (c) 2013 João Pinto Neto
  * Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
  */
 (function ($) {
 
   function log() {
-    if ($.fn.wf_debug && console && console.log) {
+    if ($.fw.fw_debug && console && console.log) {
       console.log.apply(console, arguments);
     }
   }
 
-  $.wf = $.fn;
+  $.fw = $.fn;
 
-  $.wf.richtext = function (options) {
-    var textarea;
+  $.fw.richtext = function (options) {
+    var textarea, lastElementSelected;
     var settings = $.extend(
       {},
       {
@@ -36,6 +36,29 @@
       options
     );
 
+    var defaultTextareaEvents = {
+      click: function (e) {
+        var target = $(e.target);
+        var $this = $(this);
+        
+        if (lastElementSelected !== this && target === this) {
+          $this.trigger('onFocus', [$(lastElementSelected)]);
+        }
+
+        if (target.hasClass('fw-richtext')) {
+          if (typeof lastElementSelected !== 'undefined' && e.target !== lastElementSelected)
+            $.event.trigger('elementDeselected', [$(lastElementSelected)]);
+            // $this.trigger('elementDeselected', [$(lastElementSelected)]);
+        } else {
+          target.trigger('elementSelected', [target]);
+          // $this.trigger('elementSelected', [$(target)]);
+        }
+
+        lastElementSelected = target;
+
+      }
+    };
+
     function exec(type, arg) {
       arg = arg || null;
 
@@ -54,7 +77,7 @@
       } else if (type === 'picture') {
         type = 'insertImage';
       } else if (type === 'upload') {
-        $('.wf-upload').toggle();
+        $('.fw-upload').toggle();
         return;
       }
 
@@ -64,7 +87,7 @@
     function generateForm() {
         $('<div/>')
           .css('display', 'none')
-          .addClass('wf-upload')
+          .addClass('fw-upload')
           .append(
             $('<form/>')
               .imgupload({}, function(data) {
@@ -80,21 +103,25 @@
 
     function generateRichTextArea() {
       textarea.richTextArea = $('<div/>')
-        // debug
-        .append($('<img src="Bonsai.gif">').resizable())
-        // debug
+        // debug ---------------------------------------------------------------
+        .append($('<img src=".face">').resizable())
+        // .append($('<img src=".face">').resizable())
+        .append($('<img src=".face">').resizable())
+        // debug ---------------------------------------------------------------
         .css({
           width: textarea.width(),
           height: textarea.height()
         })
-        .addClass('wf-richtext')
+        .addClass('fw-richtext')
         .attr('contentEditable', true)
         .insertBefore(textarea);
+
+        textarea.richTextArea.ownerDocument = document;
     }
 
     function generateToolbar() {
       textarea.toolBar = $('<div/>')
-        .addClass('wf-richtext-toolbar')
+        .addClass('fw-richtext-toolbar')
         .insertBefore(textarea);
 
       $(settings.toolbar.buttons).each(function (i, btn) {
@@ -118,6 +145,23 @@
       generateToolbar();
       generateRichTextArea();
       generateForm();
+      
+      // $(textarea.richTextArea).bind(defaultTextareaEvents);
+      $(document).bind(defaultTextareaEvents);
+
+      // debug ---------------------------------------------------------------
+      // $(textarea.richTextArea).bind('onFocus onBlur elementSelected elementDeselected', function (event, node) {
+      //   log(event, node);
+      // });
+      // $(textarea.richTextArea).bind('elementDeselected', function (event, node) {
+      //   log(event, node);
+      // });
+
+      // $(document).bind('elementDeselected', function (event, node) {
+      //   $('.fw-area').remove();
+      // });
+      // debug ---------------------------------------------------------------
+
       return this;
     }
 
@@ -135,8 +179,10 @@
   };
 
 
-
-  $.wf.imgupload = function (options, callback) {
+  /*
+   * Plugin to upload files
+   */
+  $.fw.imgupload = function (options, callback) {
     callback = callback || function () {};
     options = options || {};
 
@@ -160,23 +206,50 @@
 
   };
 
-  $.wf.resizable = function (options) {
-    return this.each(function () {
-      $(this).bind({
-        click: function () {
-          console.log(this)
-          $(this)
-            .focus()
-            .wrap(
-              $('<div/>')
-                .css({border: '1px solid #333', display: 'table-cell'})
-            )
+
+  /*
+   * Plugin to resize objects (Workarond to webkit contentEditable)
+   */
+  $.fw.resizable = function (options) {
+
+    return this.each(function (i, el) {
+      log(el)
+      $(el).bind({
+        elementSelected: function (e, node) {
+          e.stopPropagation();
+          var area;
+          
+          $('.fw-area').remove();
+
+          $('<div/>').addClass('fw-area')
+            .css({
+              border: '1px solid #333',
+              width: node.width(),
+              height: node.height(),
+              left: node.offset().left,
+              display: 'block',
+              position: 'absolute'
+            })
+            .prependTo(node.parent());
+          
+          // log($('<div/>'))
+          log('selected', el)
         },
-        blur: function () {
-          $(this).unwrap()
+        elementDeselected: function (e, node) {
+          e.stopPropagation();
+          log('pong', node);
+          $('.fw-area').remove();
         },
+        mousemove: function (e) {
+
+        },
+        mouseup: function () {
+          
+        }
       });
+
     });
+
   };
 
 })(jQuery);
