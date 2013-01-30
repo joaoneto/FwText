@@ -212,10 +212,14 @@
       $.fw.resizableArea = $('<div/>')
         .addClass('fw-area')
         .css({
-          border: '1px solid #333',
+          border: '1px dashed #333',
           display: 'none',
           position: 'absolute'
         })
+        .prepend('<div class="tr" style="line-height: 8px;border: 1px solid #333;display: inline-block;width: 8px;top: -2px;right: -2px;background-image: -ms-linear-gradient(bottom, #CFEDFF 0%, #00A3EF 100%);background-image: -moz-linear-gradient(bottom, #CFEDFF 0%, #00A3EF 100%);background-image: -o-linear-gradient(bottom, #CFEDFF 0%, #00A3EF 100%);background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #CFEDFF), color-stop(1, #00A3EF));background-image: linear-gradient(to top, #CFEDFF 0%, #00A3EF 100%);position: absolute;">&nbsp;</div>')
+        .prepend('<div class="tl" style="line-height: 8px;border: 1px solid #333;display: inline-block;width: 8px;top: -2px;left: -2px;background-image: -ms-linear-gradient(bottom, #CFEDFF 0%, #00A3EF 100%);background-image: -moz-linear-gradient(bottom, #CFEDFF 0%, #00A3EF 100%);background-image: -o-linear-gradient(bottom, #CFEDFF 0%, #00A3EF 100%);background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #CFEDFF), color-stop(1, #00A3EF));background-image: linear-gradient(to top, #CFEDFF 0%, #00A3EF 100%);position: absolute;">&nbsp;</div>')
+        .prepend('<div class="br" style="line-height: 8px;border: 1px solid #333;display: inline-block;width: 8px;bottom: -2px;right: -2px;background-image: -ms-linear-gradient(bottom, #CFEDFF 0%, #00A3EF 100%);background-image: -moz-linear-gradient(bottom, #CFEDFF 0%, #00A3EF 100%);background-image: -o-linear-gradient(bottom, #CFEDFF 0%, #00A3EF 100%);background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #CFEDFF), color-stop(1, #00A3EF));background-image: linear-gradient(to top, #CFEDFF 0%, #00A3EF 100%);position: absolute;">&nbsp;</div>')
+        .prepend('<div class="bl" style="line-height: 8px;border: 1px solid #333;display: inline-block;width: 8px;bottom: -2px;left: -2px;background-image: -ms-linear-gradient(bottom, #CFEDFF 0%, #00A3EF 100%);background-image: -moz-linear-gradient(bottom, #CFEDFF 0%, #00A3EF 100%);background-image: -o-linear-gradient(bottom, #CFEDFF 0%, #00A3EF 100%);background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #CFEDFF), color-stop(1, #00A3EF));background-image: linear-gradient(to top, #CFEDFF 0%, #00A3EF 100%);position: absolute;">&nbsp;</div>')
         .prependTo(document.body);
     }
 
