@@ -6,7 +6,7 @@
 (function ($) {
 
   function log() {
-    if ($.fw.fw_debug && console && console.log) {
+    if ($.fw.debug && console && console.log) {
       console.log.apply(console, arguments);
     }
   }
@@ -53,13 +53,13 @@
             $this.trigger('onFocus', [$lastElementSelected]);
           }
 
-          if (!$target.hasClass('fw-richtext'))
-            $target.trigger('elementSelected', [$target]);
-
           if (typeof lastElementSelected !== 'undefined' && e.target !== lastElementSelected)
             $(lastElementSelected).trigger('elementDeselected', [$lastElementSelected]);
 
           lastElementSelected = target;
+
+          if (!$target.hasClass('fw-richtext'))
+            $target.trigger('elementSelected', [$target]);
 
         }
       };
@@ -208,29 +208,41 @@
    */
   $.fw.elementResizable = function (options) {
 
+    if (typeof $.fw.resizableArea === 'undefined') {
+      $.fw.resizableArea = $('<div/>')
+        .addClass('fw-area')
+        .css({
+          border: '1px solid #333',
+          display: 'none',
+          position: 'absolute'
+        })
+        .prependTo(document.body);
+    }
+
+    function setResizableArea (el) {
+      $.fw.resizableArea
+        .css({
+          width: $(el).width(),
+          height: $(el).height(),
+          left: $(el).position().left -1,
+          top: $(el).position().top -1
+        }).show();
+    }
+
+    function unsetResizableArea () {
+      $.fw.resizableArea.hide();
+    }
+
     return this.each(function (i, el) {
       var $el = $(el);
       $el.bind({
-        elementSelected: function (e, node) {
-          var area;
-          
-          $('.fw-area').remove();
-
-          $('<div/>').addClass('fw-area')
-            .css({
-              border: '1px solid #333',
-              width: node.width(),
-              height: node.height(),
-              left: node.offset().left,
-              top: node.offset().top,
-              display: 'block',
-              position: 'absolute'
-            })
-            .prependTo(node.parent());
-        },
         elementDeselected: function (e, node) {
-          log('pong', node);
-          $('.fw-area').remove();
+          log('deselected', node);
+          unsetResizableArea();
+        },
+        elementSelected: function (e, node) {
+          log('selected', node);
+          setResizableArea($(node));
         },
         mousemove: function (e) {
 
